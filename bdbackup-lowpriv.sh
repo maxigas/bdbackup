@@ -5,26 +5,30 @@ if [[ $# -ne 5 ]]; then
     exit
 fi
 
-echo '----'              1>&2
-echo `date`              1>&2
-echo "Started, args: $@" 1>&2
+echo '----'              
+echo `date`              
+echo "Started, args: $@" 
 set -e
 # DEBUG:
-set -x
-TARGETMACHINE="$1"
+# Next line only works if the script is called directly...
+# set -x
+VGLOCAL="$1"
 LVLOCAL="$2"
-VGLOCAL="$3"
+VGREMOTE="$3"
 LVREMOTE="$4"
-VGREMOTE="$5"
+TARGETMACHINE="$5"
 DIFF="$HOME/diff.bds.gz"
 
 echo
 echo Dropped privileges. Syncing block devices. This may take a while.
 echo
 
-bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip > "$DIFF"
-scp "$DIFF" "$TARGETMACHINE:."
-rm "$DIFF"
+# WORKS
+#bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip > "$DIFF"
+# BROKEN experimental method, without saving to local disk:
+bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip | ssh $TARGETMACHINE "cat > $DIFF"
+#scp "$DIFF" "$TARGETMACHINE:."
+#rm "$DIFF"
 # TODO:
 # 1. I don't get while I can't write this w/o using a variable.
 #    - Maybe escape pipe?
@@ -36,7 +40,8 @@ ssh "$TARGETMACHINE" "$CMDREMOTE"
 set -e
 ssh "$TARGETMACHINE" rm "$DIFF"
 
-echo `date`      1>&2
-echo 'Finished.' 1>&2
+echo `date`
+echo 'Finished.'
+
 
 
