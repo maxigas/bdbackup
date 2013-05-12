@@ -26,7 +26,7 @@ echo
 # WORKS
 #bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip > "$DIFF"
 # BROKEN experimental method, without saving to local disk:
-bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip | ssh $TARGETMACHINE "cat > $DIFF"
+/usr/local/bin/bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VGREMOTE/$LVREMOTE | gzip | ssh $TARGETMACHINE "cat > $DIFF"
 #scp "$DIFF" "$TARGETMACHINE:."
 #rm "$DIFF"
 # TODO:
@@ -36,9 +36,9 @@ bdsync "ssh $TARGETMACHINE bdsync --server" /dev/$VGLOCAL/$LVLOCAL-snap /dev/$VG
 #    - Either I am wrong or have to fix bdsync source code...
 CMDREMOTE="gzip -d -c $DIFF | bdsync --patch='/dev/$VGREMOTE/$LVREMOTE'"
 set +e
-ssh "$TARGETMACHINE" "$CMDREMOTE"
+/usr/bin/ssh "$TARGETMACHINE" "$CMDREMOTE"
 set -e
-ssh "$TARGETMACHINE" rm "$DIFF"
+/usr/bin/ssh "$TARGETMACHINE" rm "$DIFF"
 
 echo `date`
 echo 'Finished.'

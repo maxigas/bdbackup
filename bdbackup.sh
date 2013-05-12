@@ -49,8 +49,8 @@ echo
 #     exit 1
 # fi
 
-lvcreate --snapshot -L 1G -p r --name "$LVLOCAL-snap" "/dev/$VGLOCAL/$LVLOCAL"
-su - bdsync -c "bdbackup-lowpriv.sh $VGLOCAL $LVLOCAL $VGREMOTE $LVREMOTE $TARGETMACHINE"
-lvremove -f "/dev/$VGLOCAL/$LVLOCAL-snap"
+/sbin/lvcreate --snapshot -L 1G -p r --name "$LVLOCAL-snap" "/dev/$VGLOCAL/$LVLOCAL"
+/bin/su - bdsync -c "bdbackup-lowpriv.sh $VGLOCAL $LVLOCAL $VGREMOTE $LVREMOTE $TARGETMACHINE"
+/sbin/lvremove -f "/dev/$VGLOCAL/$LVLOCAL-snap"
 echo READY
 
