@@ -5,6 +5,7 @@
 
 # a. Both sides:
 
+# 0. bdsync installed from http://bdsync.rolf-fokkens.nl/
 # 1. There is a bdsync:bdsync user.
 # 2. udev rule so that *backup* and *snap* volumes are accessible:
 # cat /etc/udev/rules.d/92-backup-snap-lvs.rules
