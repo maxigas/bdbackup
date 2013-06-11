@@ -45,10 +45,10 @@ if [ -n "$6" ]; then
 fi
 
 echo
-# read -p "Sync local /dev/$VGLOCAL/$LVLOCAL with /dev/$VGREMOTE/$LVREMOTE on $TARGETMACHINE (via a snapshot)? [y/n] "
-# if [ ! $REPLY == "y" ]; then
-#     exit 1
-# fi
+ read -p "Sync local /dev/$VGLOCAL/$LVLOCAL with /dev/$VGREMOTE/$LVREMOTE on $TARGETMACHINE (via a snapshot)? [y/n] "
+ if [ ! $REPLY == "y" ]; then
+     exit 1
+ fi
 
 /sbin/lvcreate --snapshot -L 1G -p r --name "$LVLOCAL-snap" "/dev/$VGLOCAL/$LVLOCAL"
 /bin/su - bdsync -c "bdbackup-lowpriv.sh $VGLOCAL $LVLOCAL $VGREMOTE $LVREMOTE $TARGETMACHINE"
