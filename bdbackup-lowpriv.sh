@@ -17,7 +17,14 @@ LVLOCAL="$2"
 VGREMOTE="$3"
 LVREMOTE="$4"
 TARGETMACHINE="$5"
-DIFF="$HOME/diff.bds.gz"
+DIFF="$HOME/$VGLOCAL-$LVLOCAL-diff.bds.gz"
+
+if [ -e "$DIFF" ]; then
+  echo
+  echo "Diff $DIFF already exists, that means another instance is already running or exit abnormally."
+  echo
+  exit 1
+fi
 
 echo
 echo Dropped privileges. Syncing block devices. This may take a while.
